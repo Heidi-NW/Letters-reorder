@@ -3,21 +3,21 @@ body {
 }
 
 input {
-    font-size: 40px;
-    margin-top: 30px;
+    font-size: 20px;
+    margin-top: 10px;
 }
 
 label {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: bold;
     color:antiquewhite;
-    margin: 30px; 
+    margin: 10px; 
 }
 
 #result{
-    font-size: 50px;
-    margin: 20px; 
+    font-size:25px;
+    margin: 10px; 
     color:blue;
 }
 

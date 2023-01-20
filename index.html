@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rearrange letters</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div><label for="letters-input">Enter random letters below:</label></div>
+    <input type="text" id="letters-input" name="letters-input">
+    <input type="button" value="Check" onclick="checkWord()">
+    <div id="result"></div>
+</body>
+
+<script>
+    let inputField = document.getElementById("letters-input");
+    let resultDiv = document.getElementById("result");
+    let validWords = []; // list of valid words to check against
+    let permutations = []; // list of permutations of the entered letters
+
+    // Populate validWords with a list of valid words
+    fetch('https://raw.githubusercontent.com/dwyl/english-words/master/words.txt')
+        .then(response => response.text())
+        .then(text => validWords = text.split('\n'));
+
+    inputField.addEventListener("input", function() {
+        let userLetters = inputField.value;
+        permutations = [];
+        generatePermutations(userLetters, "", permutations);
+
+        for (let i = 0; i < permutations.length; i++) {
+            if (validWords.indexOf(permutations[i]) !== -1) {
+                resultDiv.innerHTML = " "+permutations[i];
+                getDefinition(permutations[i]);
+                break;
+            } else {
+                resultDiv.innerHTML = "No valid word found";
+            }
+        }
+    });
+
+    function generatePermutations(string, prefix, result) {
+        if (string.length === 0) {
+            result.push(prefix);
+        } else {
+            for (let i = 0; i < string.length; i++) {
+                let rem = string.substring(0, i) + string.substring(i + 1);
+                generatePermutations(rem, prefix + string.charAt(i), result);
+            }
+        }
+    }
+
+    function getDefinition(word) {
+        let url = `https://od-api.oxforddictionaries.com/api/v2/entries/en-us/${word}; 
+        let headers = { "app_id": "a0592076", "app_key": "e2320755f753c558209f0fe74866da19" } 
+        fetch(url, {headers: headers}) 
+        .then(response => response.json()) 
+        .then(data => { let definitions = data.results[0].lexicalEntries[0].entries[0].senses[0].definitions; 
+        for (let i = 0; i < definitions.length; i++) { resultDiv.innerHTML += <p>${definitions[i]}</p>`;
+}
+</script>
+</html>
+
+
+
+
